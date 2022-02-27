@@ -1,0 +1,1 @@
+print("salvado por Hacker")
