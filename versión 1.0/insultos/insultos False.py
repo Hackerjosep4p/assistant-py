@@ -1,1 +1,0 @@
-print("salvado por Hacker")

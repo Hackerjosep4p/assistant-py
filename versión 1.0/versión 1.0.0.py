@@ -10,6 +10,10 @@ def establecer_archivo(ruta, permiso):
     archivo = open(ruta, permiso)
     return archivo
 
+def establecer_archivo2(ruta):
+    archivo = open(ruta)
+    return archivo
+
 def leer_archivo(archivo):
     contenido = archivo.read()
     return contenido
@@ -17,13 +21,42 @@ def leer_archivo(archivo):
 def cerrar_archivo(archivo):
     archivo.close()
 
-def salir():
-    time.sleep(5)
+def crear_ajuste_bool(ajustestr, apartirDe, linia):
+    ajuste = ""
+
+    i = apartirDe
+    while i < len(ajustestr):
+        ajuste += ajustestr[i]
+        i += 1
+
+    ajuste = ajuste.lower()
+
+    if ((ajuste == "true") or (ajuste == " true")) or ((ajuste == "si") or (ajuste == " si")):
+        ajuste = True
+    elif ((ajuste == "false") or (ajuste == " false")) or ((ajuste == "no") or (ajuste == " no")):
+        ajuste = False
+    else:
+        print("Error en \"" + "\033[1m" + "Ajustes Linia " + str(linia) + "\033[0m" + "\" El ajuste no es correcto, solo puede ser \"Si\", \"No\", \"True\", \"False\", ")
+        salir(10)
+    return ajuste
+
+def salir(i):
+    time.sleep(i)
     exit()
+
+#declarar ajustes
+archivo = establecer_archivo2(ruta + directory_separator + "ajustes" + directory_separator + "Ajustes.txt")
+ajuste1 = crear_ajuste_bool(archivo.readline, 19, 1)
+cerrar_archivo(archivo)
 
 #declarar pyttsx3
 engine = pyttsx3.init()
-engine.setProperty('voice', '''HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_ES-ES_HELENA_11.0''')
+if ajuste1:
+    engine.setProperty('voice', '''HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_ES-ES_HELENA_11.0''')
+elif not ajuste1:
+    engine.setProperty('voice', '''HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_EN-US_ZIRA_11.0''')
+else:
+    salir(5)
 
 #crear variables
 ruta = str(pathlib.Path().absolute())
@@ -35,7 +68,7 @@ if ruta_2[len(ruta_2) - 1] == "versión 1.0":
     pass
 else:
     print("Error Fatal")
-    salir()
+    salir(5)
 modo_de_prueba = True
 necesidad = -1
 insultos = ["abanto", "abrazafarolas", "adufe", "alcornoque", "alfeñique", "andurriasmo", "arrastracueros", "artabán", "atarre", "baboso", "barrabás", "barriobajero", "bebecharcos", "bellaco", "belloto", "berzotas", "besugo", "bobalicón", "bocabuzón", "bocachancla", "bocallanta", "boquimuelle", "borrico", "botarate", "brasas", "cabestro", "cabezaalberca", "cabezabuque", "cachibache", "cafre", "cagalindes", "cagarruta", "calambuco", "calamidad", "caldúo", "calientahielos", "calzamonas", "cansalmas", "cantamañanas", "capullo", "caracaballo", "caracartón", "caraculo", "caraflema", "carajaula", "carajote", "carapapa", "carapijo", "cazurro", "cebollino", "cenizo", "cenutrio", "ceporro", "cernícalo", "charrán", "chiquilicuatre", "chirimbaina", "chupacables", "chupasangre", "chupóptero", "cierrabares", "cipote", "comebolsas", "comechapas", "comeflores", "comestacas", "cretino", "cuerpoescombro", "culopollo", "descerebrado", "desgarracalzas", "dondiego", "donnadie", "echacantos", "ejarramantas", "energúmeno", "esbaratabailes", "escolimoso", "escornacabras", "estulto", "fanfosquero", "fantoche", "fariseo", "filimincias", "foligoso", "fulastre", "ganapán", "ganapio", "gandúl", "gañán", "gaznápiro", "gilipuertas", "giraesquinas", "gorrino", "gorrumino", "guitarro", "gurriato", "habahelá", "huelegateras", "huevón", "imbecil", "lamecharcos", "lameculos", "lameplatos", "lechuguino", "lerdo", "letrín", "lloramigas", "longanizas", "lumbreras", "maganto", "majadero", "malasangre", "malasombra", "malparido", "mameluco", "mamon", "mamporrero", "manegueta", "mangarrán", "mangurrián", "mastuerzo", "matacandiles", "meapilas", "melón", "mendrugo", "mentecato", "mequetrefe", "merluzo", "metemuertos", "metijaco", "mindundi", "morlaco", "morroestufa", "muerdesartenes", "orate", "ovejo", "pagafantas", "palurdo", "pamplinas", "panarra", "panoli", "papafrita", "papanatas", "papirote", "paquete", "pardillo", "parguela", "pasmarote", "pasmasuegras", "pataliebre", "patán", 
@@ -64,7 +97,7 @@ while not necesidad == 0:
             else:
                 necesidad = -1
                 print("Error Fatal")
-                salir()
+                salir(5)
 
     if 'adios' in necesidad:
         necesidad = 0
@@ -125,6 +158,7 @@ while not necesidad == 0:
         engine.say("Lo siento, no puedo hacer eso, aun estoy aprendiendo.")
         engine.runAndWait()
     else:
+        print("\"" + "\033[1m" + "Pequeño error interno" + "\033[0m" + "\"")
         print('Lo siento, no puedo hacer eso, aun estoy aprendiendo.')
         #check_output(ruta + os.path.sep + "audios" + os.path.sep + "Lo-siento,-no-puedo-hacer-eso,-aun-estoy-aprendiendo.mp3", shell=True)
         engine.say("Lo siento, no puedo hacer eso, aun estoy aprendiendo.")
@@ -132,6 +166,6 @@ while not necesidad == 0:
 
 
 print()
-print('Adios')
+#print('Adios')
 
-salir()
+salir(5)
