@@ -17,12 +17,13 @@ def leer_archivo(archivo):
 def cerrar_archivo(archivo):
     archivo.close()
 
+def salir():
+    time.sleep(5)
+    exit()
+
 #declarar pyttsx3
 engine = pyttsx3.init()
 engine.setProperty('voice', '''HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_ES-ES_HELENA_11.0''')
-
-print("adios")
-exit()
 
 #crear variables
 ruta = str(pathlib.Path().absolute())
@@ -34,8 +35,7 @@ if ruta_2[len(ruta_2) - 1] == "versión 1.0":
     pass
 else:
     print("Error Fatal")
-    time.sleep(5)
-    exit()
+    salir()
 modo_de_prueba = True
 necesidad = -1
 insultos = ["abanto", "abrazafarolas", "adufe", "alcornoque", "alfeñique", "andurriasmo", "arrastracueros", "artabán", "atarre", "baboso", "barrabás", "barriobajero", "bebecharcos", "bellaco", "belloto", "berzotas", "besugo", "bobalicón", "bocabuzón", "bocachancla", "bocallanta", "boquimuelle", "borrico", "botarate", "brasas", "cabestro", "cabezaalberca", "cabezabuque", "cachibache", "cafre", "cagalindes", "cagarruta", "calambuco", "calamidad", "caldúo", "calientahielos", "calzamonas", "cansalmas", "cantamañanas", "capullo", "caracaballo", "caracartón", "caraculo", "caraflema", "carajaula", "carajote", "carapapa", "carapijo", "cazurro", "cebollino", "cenizo", "cenutrio", "ceporro", "cernícalo", "charrán", "chiquilicuatre", "chirimbaina", "chupacables", "chupasangre", "chupóptero", "cierrabares", "cipote", "comebolsas", "comechapas", "comeflores", "comestacas", "cretino", "cuerpoescombro", "culopollo", "descerebrado", "desgarracalzas", "dondiego", "donnadie", "echacantos", "ejarramantas", "energúmeno", "esbaratabailes", "escolimoso", "escornacabras", "estulto", "fanfosquero", "fantoche", "fariseo", "filimincias", "foligoso", "fulastre", "ganapán", "ganapio", "gandúl", "gañán", "gaznápiro", "gilipuertas", "giraesquinas", "gorrino", "gorrumino", "guitarro", "gurriato", "habahelá", "huelegateras", "huevón", "imbecil", "lamecharcos", "lameculos", "lameplatos", "lechuguino", "lerdo", "letrín", "lloramigas", "longanizas", "lumbreras", "maganto", "majadero", "malasangre", "malasombra", "malparido", "mameluco", "mamon", "mamporrero", "manegueta", "mangarrán", "mangurrián", "mastuerzo", "matacandiles", "meapilas", "melón", "mendrugo", "mentecato", "mequetrefe", "merluzo", "metemuertos", "metijaco", "mindundi", "morlaco", "morroestufa", "muerdesartenes", "orate", "ovejo", "pagafantas", "palurdo", "pamplinas", "panarra", "panoli", "papafrita", "papanatas", "papirote", "paquete", "pardillo", "parguela", "pasmarote", "pasmasuegras", "pataliebre", "patán", 
@@ -64,7 +64,7 @@ while not necesidad == 0:
             else:
                 necesidad = -1
                 print("Error Fatal")
-                exit()
+                salir()
 
     if 'adios' in necesidad:
         necesidad = 0
@@ -84,6 +84,8 @@ while not necesidad == 0:
         necesidad = 6
     elif "download" in necesidad:
         necesidad = 7
+    else:
+        necesidad = -2
 
 
 
@@ -117,6 +119,11 @@ while not necesidad == 0:
             check_output(ruta + os.path.sep + "enlaces" + os.path.sep + "ASISTENT PY - DOWNLOAD-PY.url", shell=True)
         else:
             print("Error")
+    elif necesidad == -2:
+        print('Lo siento, no puedo hacer eso, aun estoy aprendiendo.')
+        #check_output(ruta + os.path.sep + "audios" + os.path.sep + "Lo-siento,-no-puedo-hacer-eso,-aun-estoy-aprendiendo.mp3", shell=True)
+        engine.say("Lo siento, no puedo hacer eso, aun estoy aprendiendo.")
+        engine.runAndWait()
     else:
         print('Lo siento, no puedo hacer eso, aun estoy aprendiendo.')
         #check_output(ruta + os.path.sep + "audios" + os.path.sep + "Lo-siento,-no-puedo-hacer-eso,-aun-estoy-aprendiendo.mp3", shell=True)
@@ -125,8 +132,6 @@ while not necesidad == 0:
 
 
 print()
-#print('Adios')
+print('Adios')
 
-#check_output("C:\\Users\\isabe\\OneDrive\\Desktop\\asistent py\\insultos\\insultos.bat", shell=True)
-
-time.sleep(5)
+salir()
