@@ -1,4 +1,4 @@
-@echo Primero sigue el tutorial del video
+@echo Primero ves a "Ajustes de usuario" y configura los ajustes que encuentres.
 
 pause
 

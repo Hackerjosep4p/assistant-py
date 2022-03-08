@@ -3,6 +3,7 @@ import time
 from subprocess import check_output
 import pathlib
 import os
+import random
 
 #crear funciones
 def establecer_archivo(ruta, permiso):
@@ -38,8 +39,33 @@ def crear_ajuste_bool(ajustestr, apartirDe, linia):
     elif ((ajuste == "false") or (ajuste == " false")) or ((ajuste == "no") or (ajuste == " no")):
         ajuste = False
     else:
-        print("Error en \"" + "\033[1m" + "Ajustes Linia " + str(linia) + "\033[0m" + "\" El ajuste no es correcto, solo puede ser \"Si\", \"No\", \"True\", \"False\", ")
+        print("Error en \"" + "\033[1m" + "Ajustes Linia " + str(linia) + "\033[0m" + "\" El ajuste no es correcto, solo puede ser \"Si\", \"No\", \"True\", \"False\".")
         salir(10)
+    return ajuste
+
+def crear_ajuste_str(ajustestr, apartirDe, linia):
+    ajustestr = str(ajustestr)
+    apartirDe = int(apartirDe)
+    linia = int(linia)
+    ajuste = ""
+
+    i = apartirDe
+    while i < len(ajustestr):
+        ajuste += ajustestr[i]
+        i += 1
+    
+    if ajuste == "Nombre sin definir":
+        print("Error en \"" + "\033[1m" + "Ajustes de usuario Linia " + str(linia) + "\033[0m" + "\" El ajuste no es correcto, has de poner un nombre de usuario valido.")
+        salir(10)
+    elif ajuste == ajuste.lower():
+        print("Error en \"" + "\033[1m" + "Ajustes Linia " + str(linia) + "\033[0m" + "\" El ajuste no es correcto, el nombre ha de empezar por mayuscula.")
+        salir(10)
+    elif " " in ajuste:
+        print("Error en \"" + "\033[1m" + "Ajustes de usuario Linia " + str(linia) + "\033[0m" + "\" El ajuste no es correcto, el nombre de usuario no puede contener espacios.")
+        salir(10)
+    else:
+        pass
+
     return ajuste
 
 def salir(i):
@@ -58,17 +84,21 @@ else:
     salir(5)
 
 #declarar ajustes
+archivo = establecer_archivo2(ruta + directory_separator + "ajustes" + directory_separator + "Ajustes de usuario.txt")
+ajuste1 = crear_ajuste_str(archivo.readline(), 19, 1)
+cerrar_archivo(archivo)
 
 #crear variables
+nombre_del_usuario = ajuste1
 modo_de_prueba = False
 necesidad = -1
-insultos = ["abanto", "abrazafarolas", "adufe", "alcornoque", "alfeñique", "andurriasmo", "arrastracueros", "artabán", "atarre", "baboso", "barrabás", "barriobajero", "bebecharcos", "bellaco", "belloto", "berzotas", "besugo", "bobalicón", "bocabuzón", "bocachancla", "bocallanta", "boquimuelle", "borrico", "botarate", "brasas", "cabestro", "cabezaalberca", "cabezabuque", "cachibache", "cafre", "cagalindes", "cagarruta", "calambuco", "calamidad", "caldúo", "calientahielos", "calzamonas", "cansalmas", "cantamañanas", "capullo", "caracaballo", "caracartón", "caraculo", "caraflema", "carajaula", "carajote", "carapapa", "carapijo", "cazurro", "cebollino", "cenizo", "cenutrio", "ceporro", "cernícalo", "charrán", "chiquilicuatre", "chirimbaina", "chupacables", "chupasangre", "chupóptero", "cierrabares", "cipote", "comebolsas", "comechapas", "comeflores", "comestacas", "cretino", "cuerpoescombro", "culopollo", "descerebrado", "desgarracalzas", "dondiego", "donnadie", "echacantos", "ejarramantas", "energúmeno", "esbaratabailes", "escolimoso", "escornacabras", "estulto", "fanfosquero", "fantoche", "fariseo", "filimincias", "foligoso", "fulastre", "ganapán", "ganapio", "gandúl", "gañán", "gaznápiro", "gilipuertas", "giraesquinas", "gorrino", "gorrumino", "guitarro", "gurriato", "habahelá", "huelegateras", "huevón", "imbecil", "lamecharcos", "lameculos", "lameplatos", "lechuguino", "lerdo", "letrín", "lloramigas", "longanizas", "lumbreras", "maganto", "majadero", "malasangre", "malasombra", "malparido", "mameluco", "mamon", "mamporrero", "manegueta", "mangarrán", "mangurrián", "mastuerzo", "matacandiles", "meapilas", "melón", "mendrugo", "mentecato", "mequetrefe", "merluzo", "metemuertos", "metijaco", "mindundi", "morlaco", "morroestufa", "muerdesartenes", "orate", "ovejo", "pagafantas", "palurdo", "pamplinas", "panarra", "panoli", "papafrita", "papanatas", "papirote", "paquete", "pardillo", "parguela", "pasmarote", "pasmasuegras", "pataliebre", "patán", 
-"pavitonto", "pazguato", "pecholata", "pedorro", "peinabombillas", "peinaovejas", "pelagallos", "pelagambas", "pelagatos", "pelatigres", "pelazarzas", "pelele", "pelma", "percebe", "perrocostra", "perroflauta", "peterete", "petimetre", "picapleitos", "pichabrava", "pillavispas", "piltrafa", "pinchauvas", "pintamonas", "piojoso", "pitañoso", "pitofloro", "plomo", "pocasluces", "pollopera", "puto", "puta", "quitahipos", "rastrapajo", "rebañasandías", "revientabaules", "ríeleches", "robaperas", "sabandija", "sacamuelas", "sanguijuela", "sinentraero", "sinsustancia", "sonajas", "sonso", "soplagaitas", "soplaguindas", "sosco", "tagarote", "tarado", "tarugo", "tiralevitas", "tocapelotas", "tocho", "tolai", "tontaco", "tonto", "tontucio", "tordo", "tragaldabas", "tuercebotas", "tunante", "zamacuco", "zambombo", "zampabollos", "zamugo", "zángano", "zarrapastroso", "zascandil", "zopenco", "zoquete", "zote", "zullenco", "zurcefrenillos"]
+insultos = ["abanto", "abrazafarolas", "adufe", "alcornoque", "alfeñique", "andurriasmo", "arrastracueros", "artabán", "atarre", "baboso", "barrabás", "barriobajero", "bebecharcos", "bellaco", "belloto", "berzotas", "besugo", "bobalicón", "bocabuzón", "bocachancla", "bocallanta", "boquimuelle", "borrico", "botarate", "brasas", "cabestro", "cabezaalberca", "cabezabuque", "cachibache", "cafre", "cagalindes", "cagarruta", "calambuco", "calamidad", "caldúo", "calientahielos", "calzamonas", "cansalmas", "cantamañanas", "capullo", "caracaballo", "caracartón", "caraculo", "caraflema", "carajaula", "carajote", "carapapa", "carapijo", "cazurro", "cebollino", "cenizo", "cenutrio", "ceporro", "cernícalo", "charrán", "chiquilicuatre", "chirimbaina", "chupacables", "chupasangre", "chupóptero", "cierrabares", "cipote", "comebolsas", "comechapas", "comeflores", "comestacas", "cretino", "cuerpoescombro", "culopollo", "descerebrado", "desgarracalzas", "dondiego", "donnadie", "echacantos", "ejarramantas", "energúmeno", "esbaratabailes", "escolimoso", "escornacabras", "estulto", "fanfosquero", "fantoche", "fariseo", "filimincias", "foligoso", "folla", "folle", "follo", "fulastre", "ganapán", "ganapio", "gandúl", "gañán", "gaznápiro", "gilipuertas", "giraesquinas", "gorrino", "gorrumino", "guitarro", "gurriato", "habahelá", "huelegateras", "huevón", "imbecil", "lamecharcos", "lameculos", "lameplatos", "lechuguino", "lerdo", "letrín", "lloramigas", "longanizas", "lumbreras", "maganto", "majadero", "malasangre", "malasombra", "malparido", "mameluco", "mamon", "mamporrero", "manegueta", "mangarrán", "mangurrián", "maric", "marik", "mastuerzo", "matacandiles", "meapilas", "melón", "mendrugo", "mentecato", "mequetrefe", "merluzo", "metemuertos", "metijaco", "mindundi", "morlaco", "morroestufa", "muerdesartenes", "orate", "ovejo", "pagafantas", "palurdo", "pamplinas", "panarra", "panoli", "papafrita", "papanatas", "papirote", "paquete", "pardillo", "parguela", "pasmarote", "pasmasuegras", "pataliebre", "patán", 
+"pavitonto", "pazguato", "pecholata", "pedorro", "peinabombillas", "peinaovejas", "pelagallos", "pelagambas", "pelagatos", "pelatigres", "pelazarzas", "pelele", "pelma", "percebe", "perrocostra", "perroflauta", "peterete", "petimetre", "picapleitos", "pichabrava", "pillavispas", "piltrafa", "pinchauvas", "pintamonas", "piojoso", "pitañoso", "pitofloro", "plomo", "pocasluces", "polla", "pollopera", "puto", "puta", "quitahipos", "rastrapajo", "rebañasandías", "revientabaules", "ríeleches", "robaperas", "sabandija", "sacamuelas", "sanguijuela", "sinentraero", "sinsustancia", "sonajas", "sonso", "soplagaitas", "soplaguindas", "sosco", "tagarote", "tarado", "tarugo", "tiralevitas", "tocapelotas", "tocho", "tolai", "tontaco", "tonto", "tontucio", "tordo", "tragaldabas", "tuercebotas", "tunante", "zamacuco", "zambombo", "zampabollos", "zamugo", "zángano", "zarrapastroso", "zascandil", "zopenco", "zoquete", "zote", "zullenco", "zurcefrenillos"]
 print(ruta + "\n")
 
 
 
-print('Hola, que tal, ¡yo soy Steve tu asistente!')
+print('Hola ' + nombre_del_usuario + ', que tal, ¡yo soy Steve tu asistente!')
 
 while not necesidad == 0:
 
@@ -112,8 +142,12 @@ while not necesidad == 0:
         print('\nAdios')
         check_output(ruta + os.path.sep + "audios" + os.path.sep + "Adios.mp3", shell=True)
     elif necesidad == 1:
-        print("Hola, soy Steve, tu asistente personal, y estoy aqui para ayudarte.")
-        check_output(ruta + os.path.sep + "audios" + os.path.sep + "hola,-soy-steve-tu-asistente-personal-y-estoy-aqui-para-ayudarte.mp3", shell=True)
+        numeroalazar = random.randint(0, 1)
+        if numeroalazar == 0:
+            print("Hola " + nombre_del_usuario + ", soy Steve, tu asistente personal, y estoy aqui para ayudarte.")
+            check_output(ruta + os.path.sep + "audios" + os.path.sep + "hola,-soy-steve-tu-asistente-personal-y-estoy-aqui-para-ayudarte.mp3", shell=True)
+        else:
+            print("Hola " + nombre_del_usuario + ".")
     elif necesidad == 2:
         necesidad = input("Que parte de la pagina web quieres abrir (\"" + "\033[1m" + "Inicio" + "\033[0m" + "\", \"" + "\033[1m" + "Download asistent" + "\033[0m" + "\", \"" + "\033[1m" + "Download py" + "\033[0m" + "\", \"" + "\033[1m" + "Insulto" + "\033[0m" + "\", \"" + "\033[1m" + "Error" + "\033[0m" + "\", \"" + "\033[1m" + "Download" + "\033[0m" + "\")? ")
 
